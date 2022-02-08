@@ -2,14 +2,24 @@
 
 namespace Tests\Feature;
 
-use App\Models\UrlShort;
+use App\Repository\UrlRepository;
+use App\Services\MyObserver;
 use App\Services\ShortUrlMaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Spatie\Crawler\Crawler;
 use Tests\TestCase;
 
 class ShortUrlTest extends TestCase
 {
+    private UrlRepository $urlRepo;
+
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
+    {
+        $this->urlRepo = new UrlRepository();
+        parent::__construct($name, $data, $dataName);
+    }
+
     /**
      * A basic feature test example.
      *
@@ -40,25 +50,16 @@ class ShortUrlTest extends TestCase
             'title' => '',
             'access_count' => 0,
         ];
-        $shortMaker->register($data);
+        $this->urlRepo->register($data);
     }
 
     public function test_register()
     {
-        (new UrlShort())->where('original_url', 'http://localhost')->delete();
+        $url = 'http://localhost';
+        $this->registerUrl($url);
 
-        $data = [
-            'original_url' => 'http://localhost',
-            'short_url' => 'LL',
-            'title' => '',
-            'access_count' => 0,
-        ];
-        $shortMaker = new ShortUrlMaker();
-
-        $shortMaker->register($data);
-
-        $countRegister = (new UrlShort())->where('original_url',  $data['original_url'])->count();
-
+        $countRegister = $this->urlRepo->howManyUrlExists($url);
+        $this->urlRepo->deleteByUrl($url);
         $this->assertEquals(1, $countRegister);
     }
 }

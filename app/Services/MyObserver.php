@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\UrlShort;
+use App\Repository\UrlRepository;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 use Psr\Http\Message\ResponseInterface;
@@ -21,7 +22,7 @@ class MyObserver extends CrawlObserver
             $dom->preserveWhiteSpace = false;
 
             $title = $dom->getElementsByTagName('title')->item(0)->nodeValue;
-            (new ShortUrlMaker())->registerTitle($title, $url->__toString());
+            (new UrlRepository())->updateByUrl(['title' => $title], $url->__toString());
         }
     }
 
