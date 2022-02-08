@@ -1,3 +1,6 @@
+## start project
+- run `make install`
+
 ### Register  Url
 - endpoint http://localhost:8080/api/short
 - method: post
