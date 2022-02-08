@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\UrlShort;
-use Illuminate\Http\Request;
 
 class UrlShortController extends Controller
 {

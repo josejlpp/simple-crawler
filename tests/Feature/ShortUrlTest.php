@@ -62,4 +62,31 @@ class ShortUrlTest extends TestCase
         $this->urlRepo->deleteByUrl($url);
         $this->assertEquals(1, $countRegister);
     }
+
+    /** skop */
+    public function test_Api()
+    {
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
+
+        $data = [
+            'original_url' => 'https://google.com/',
+            'short_url' => '5',
+            'title' => '',
+            'access_count' => 0,
+        ];
+
+        $this->urlRepo->register($data);
+
+        $countRegister = $this->urlRepo->howManyUrlExists($data['original_url']);
+
+        Crawler::create()
+            ->setCrawlObserver(new MyObserver())
+            ->startCrawling($data['original_url']);
+
+        $urlModel = $this->urlRepo->findByOriginalUrl($data['original_url']);
+        $this->urlRepo->deleteByUrl($data['original_url']);
+        $this->assertEquals('Google', $urlModel->title);
+    }
 }

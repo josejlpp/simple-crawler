@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\MakeShortUrl;
-use App\Models\UrlShort;
+use App\Repository\UrlRepository;
 use App\Services\MyObserver;
 use App\Services\ShortUrlMaker;
 use Illuminate\Http\Request;
-use Spatie\Crawler\Crawler;
 
 class CrawlerController extends Controller
 {
@@ -23,7 +22,7 @@ class CrawlerController extends Controller
             'access_count' => 0,
         ];
 
-        $shortMaker->register($data);
+        (new UrlRepository())->register($data);
 
         $this->dispatch(
             new MakeShortUrl($url)
