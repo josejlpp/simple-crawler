@@ -17,8 +17,6 @@ class ShortUrlMaker
         $uniqueShortUrl = false;
         $verifyQtd = 1;
 
-        if($this->urlExists($originalUrl)) throw new \Exception('Url already exists!');
-
         do{
             $shortUrl = substr(sha1($originalUrl), 0, $verifyQtd);
             if(UrlShort::where('short_url', $shortUrl)->count() == 0) {
@@ -32,11 +30,20 @@ class ShortUrlMaker
 
     public function register(array $data): UrlShort
     {
+        $this->urlExists($data['original_url']);
         return UrlShort::create($data);
     }
 
-    private function urlExists(string $url): bool
+    private function urlExists(string $url): void
     {
-       return UrlShort::where('original_url', $url)->count() > 0;
+        if(UrlShort::where('original_url', $url)->count() > 0) throw new \Exception('Url already exists!');
+    }
+
+    public function registerTitle(string $title, $url): void
+    {
+        $urlSaved = (new UrlShort())->where('original_url', $url)->first();
+        if(strlen(trim($title)) == 0) $title = $urlSaved->original_url;
+        $urlSaved->title = $title;
+        $urlSaved->save();
     }
 }

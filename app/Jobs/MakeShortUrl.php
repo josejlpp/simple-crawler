@@ -20,7 +20,7 @@ class MakeShortUrl implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private string $urlRegistered){}
+    public function __construct(private string $url){}
 
     /**
      * Execute the job.

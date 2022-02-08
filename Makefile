@@ -9,3 +9,6 @@ install:
 	@docker-compose exec web cp .env.example .env
 	@docker-compose exec web php artisan migrate
 	@docker-compose exec web php artisan migrate --env=testing
+
+test:
+	@docker-compose exec web ./vendor/bin/phpunit

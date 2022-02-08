@@ -21,10 +21,7 @@ class MyObserver extends CrawlObserver
             $dom->preserveWhiteSpace = false;
 
             $title = $dom->getElementsByTagName('title')->item(0)->nodeValue;
-            $url = (new UrlShort())->where('original_url', $url->__toString())->firstOrFail();
-            if(strlen(trim($title)) == 0) $title = $url->original_url;
-            $url->title = $title;
-            $url->save();
+            (new ShortUrlMaker())->registerTitle($title, $url->__toString());
         }
     }
 
