@@ -20,7 +20,7 @@
             <tbody>
             @forelse($moreAccess as $access)
               <tr>
-                <td>{{ asset($access->short_url) }}</td>
+                <td><a href="{{ asset($access->short_url) }}" target="_blank">{{ asset($access->short_url) }}</a></td>
                 <td>{{ $access->title }}</td>
                 <td>{{ $access->access_count }}</td>
               </tr>
