@@ -10,3 +10,6 @@
 
 ### Access Lista
 - http://localhost:8080/list-more-access
+
+### tests
+- run `make test` (very simple test)
